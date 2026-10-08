@@ -1,1 +1,51 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Info App</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#0f172a;color:#fff}
+header{padding:30px 20px;text-align:center;background:#1e293b}
+h1{margin:0;font-size:26px}
+header p{margin:6px 0 0;color:#94a3b8}
+nav{display:flex;background:#1e293b}
+nav button{flex:1;padding:14px;border:0;background:none;color:#94a3b8;font-size:16px}
+nav button.on{color:#fff;border-bottom:3px solid #38bdf8}
+.tab{display:none;padding:20px}
+.tab.on{display:block}
+.card{background:#1e293b;padding:16px;border-radius:12px;margin-bottom:12px}
+.card b{color:#38bdf8}
+</style>
+</head>
+<body>
+<header>
+<h1>Himanshu</h1>
+<p>Mera Info App</p>
+</header>
+<nav>
+<button class="on" onclick="show(0,this)">Home</button>
+<button onclick="show(1,this)">About</button>
+<button onclick="show(2,this)">Contact</button>
+</nav>
+<div class="tab on">
+<div class="card"><b>Welcome</b><br>Ye mera pehla app hai.</div>
+</div>
+<div class="tab">
+<div class="card"><b>Naam</b><br>Himanshu</div>
+<div class="card"><b>Kaam</b><br>Student / Developer</div>
+<div class="card"><b>Shauk</b><br>Coding seekhna</div>
+</div>
+<div class="tab">
+<div class="card"><b>Email</b><br>himanshufbg090@gmail.com</div>
+<div class="card"><b>GitHub</b><br>himanshufbg090-sys</div>
+</div>
+<script>
+function show(i,b){
+document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('on',n==i));
+document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+b.classList.add('on');
+}
+</script>
+</body>
+</html>
