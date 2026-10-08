@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="./manifest.json"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyApp</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#222;
+}
+header{
+  padding:22px;
+  background:#111827;
+  color:white;
+  text-align:center;
+}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 4px 15px #0001;
+  cursor:pointer;
+}
+.card h3{margin:8px 0}
+.section{
+  margin-top:20px;
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 4px 15px #0001;
+}
+input,textarea,button{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border-radius:10px;
+  border:1px solid #ddd;
+}
+textarea{min-height:120px}
+button{
+  background:#111827;
+  color:white;
+  border:0;
+  cursor:pointer;
+}
+.item{
+  padding:12px;
+  margin:8px 0;
+  background:#f1f5f9;
+  border-radius:10px;
+}
+.dark{
+  background:#111827;
+  color:#eee;
+}
+.dark .card,.dark .section{background:#1f2937}
+.dark .item{background:#374151}
+.dark input,.dark textarea{background:#111827;color:white}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 MyApp</h1>
+  <p>Study • Journal • Tasks</p>
+</header>
+
+<div class="container">
+
+<div class="cards">
+  <div class="card" onclick="showSection('journal')">
+    📝
+    <h3>Journal</h3>
+    <p>Write your thoughts</p>
+  </div>
+
+  <div class="card" onclick="showSection('todo')">
+    ✅
+    <h3>To-Do</h3>
+    <p>Manage your tasks</p>
+  </div>
+
+  <div class="card" onclick="showSection('study')">
+    📚
+    <h3>Study Tracker</h3>
+    <p>Track your study</p>
+  </div>
+
+  <div class="card" onclick="toggleDark()">
+    🌙
+    <h3>Dark Mode</h3>
+    <p>Change appearance</p>
+  </div>
+</div>
+
+<div id="journal" class="section">
+  <h2>📝 My Journal</h2>
+  <input id="journalTitle" placeholder="Journal title">
+  <textarea id="journalText" placeholder="Write your journal..."></textarea>
+  <button onclick="saveJournal()">💾 Save Journal</button>
+  <input id="search" placeholder="🔍 Search journal" oninput="displayJournals()">
+  <div id="journalList"></div>
+</div>
+
+<div id="todo" class="section">
+  <h2>✅ To-Do List</h2>
+  <input id="task" placeholder="Enter a task">
+  <button onclick="addTask()">➕ Add Task</button>
+  <div id="taskList"></div>
+</div>
+
+<div id="study" class="section">
+  <h2>📚 Study Tracker</h2>
+  <input id="subject" placeholder="Subject">
+  <input id="minutes" type="number" placeholder="Study minutes">
+  <button onclick="addStudy()">📊 Add Study</button>
+  <div id="studyList"></div>
+</div>
+
+</div>
+
+<script>
+let journals=JSON.parse(localStorage.getItem("journals")||"[]");
+let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
+let studies=JSON.parse(localStorage.getItem("studies")||"[]");
+
+function showSection(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+function saveJournal(){
+  let title=document.getElementById("journalTitle").value.trim();
+  let text=document.getElementById("journalText").value.trim();
+
+  if(!title||!text){
+    alert("Please enter title and journal text.");
+    return;
+  }
+
+  journals.unshift({
+    title:title,
+    text:text,
+    date:new Date().toLocaleString()
+  });
+
+  localStorage.setItem("journals",JSON.stringify(journals));
+
+  document.getElementById("journalTitle").value="";
+  document.getElementById("journalText").value="";
+
+  displayJournals();
+}
+
+function displayJournals(){
+  let q=document.getElementById("search").value.toLowerCase();
+  let box=document.getElementById("journalList");
+
+  box.innerHTML=journals
+    .filter(j=>j.title.toLowerCase().includes(q)||j.text.toLowerCase().includes(q))
+    .map((j,i)=>`
+      <div class="item">
+        <b>${j.title}</b>
+        <small>${j.date}</small>
+        <p>${j.text}</p>
+        <button onclick="deleteJournal(${i})">🗑️ Delete</button>
+      </div>
+    `).join("");
+}
+
+function deleteJournal(i){
+  journals.splice(i,1);
+  localStorage.setItem("journals",JSON.stringify(journals));
+  displayJournals();
+}
+
+function addTask(){
+  let task=document.getElementById("task").value.trim();
+  if(!task)return;
+
+  tasks.push({text:task,done:false});
+  localStorage.setItem("tasks",JSON.stringify(tasks));
+
+  document.getElementById("task").value="";
+  displayTasks();
+}
+
+function displayTasks(){
+  document.getElementById("taskList").innerHTML=tasks.map((t,i)=>`
+    <div class="item">
+      <input type="checkbox" ${t.done?"checked":""}
+      onchange="toggleTask(${i})">
+      ${t.done?"<s>"+t.text+"</s>":t.text}
+      <button onclick="deleteTask(${i})">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+
+function toggleTask(i){
+  tasks[i].done=!tasks[i].done;
+  localStorage.setItem("tasks",JSON.stringify(tasks));
+  displayTasks();
+}
+
+function deleteTask(i){
+  tasks.splice(i,1);
+  localStorage.setItem("tasks",JSON.stringify(tasks));
+  displayTasks();
+}
+
+function addStudy(){
+  let subject=document.getElementById("subject").value.trim();
+  let minutes=document.getElementById("minutes").value;
+
+  if(!subject||!minutes)return;
+
+  studies.unshift({
+    subject:subject,
+    minutes:minutes,
+    date:new Date().toLocaleDateString()
+  });
+
+  localStorage.setItem("studies",JSON.stringify(studies));
+
+  document.getElementById("subject").value="";
+  document.getElementById("minutes").value="";
+
+  displayStudies();
+}
+
+function displayStudies(){
+  document.getElementById("studyList").innerHTML=studies.map((s,i)=>`
+    <div class="item">
+      📚 <b>${s.subject}</b> — ${s.minutes} minutes
+      <br>${s.date}
+      <button onclick="deleteStudy(${i})">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+
+function deleteStudy(i){
+  studies.splice(i,1);
+  localStorage.setItem("studies",JSON.stringify(studies));
+  displayStudies();
+}
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+
+displayJournals();
+displayTasks();
+displayStudies();
+</script>
+
+</body>
+</html>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+</script>
