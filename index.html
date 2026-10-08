@@ -3,49 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Info App</title>
+<title>Himanshu</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#0f172a;color:#fff}
-header{padding:30px 20px;text-align:center;background:#1e293b}
-h1{margin:0;font-size:26px}
-header p{margin:6px 0 0;color:#94a3b8}
-nav{display:flex;background:#1e293b}
-nav button{flex:1;padding:14px;border:0;background:none;color:#94a3b8;font-size:16px}
-nav button.on{color:#fff;border-bottom:3px solid #38bdf8}
-.tab{display:none;padding:20px}
+:root{--bg:#0b1020;--card:#161d33;--tx:#fff;--mut:#94a3b8;--ac:#38bdf8}
+body.light{--bg:#f1f5f9;--card:#fff;--tx:#0f172a;--mut:#64748b}
+*{box-sizing:border-box}
+body{margin:0;font-family:sans-serif;background:var(--bg);color:var(--tx);transition:.3s}
+header{padding:40px 20px 30px;text-align:center;background:linear-gradient(135deg,#6366f1,#06b6d4);color:#fff;border-radius:0 0 30px 30px;position:relative}
+.av{width:90px;height:90px;border-radius:50%;background:#fff3;border:3px solid #fff;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:bold}
+h1{margin:0}
+#clock{margin-top:8px;opacity:.9}
+#mode{position:absolute;top:12px;right:12px;border:0;background:#fff3;color:#fff;border-radius:20px;padding:8px 12px;font-size:16px}
+nav{display:flex;margin:16px;background:var(--card);border-radius:14px;padding:4px}
+nav button{flex:1;padding:12px;border:0;background:none;color:var(--mut);font-size:15px;border-radius:10px}
+nav button.on{background:var(--ac);color:#fff}
+.tab{display:none;padding:0 16px 30px;animation:f .4s}
 .tab.on{display:block}
-.card{background:#1e293b;padding:16px;border-radius:12px;margin-bottom:12px}
-.card b{color:#38bdf8}
+@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+.card{background:var(--card);padding:16px;border-radius:14px;margin-bottom:12px}
+.card b{color:var(--ac)}
+.bar{height:8px;background:#8883;border-radius:8px;margin-top:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#06b6d4);border-radius:8px}
+a.btn{display:block;text-decoration:none;color:#fff;background:linear-gradient(135deg,#6366f1,#06b6d4);padding:14px;border-radius:14px;margin-bottom:12px;text-align:center}
 </style>
 </head>
 <body>
 <header>
-<h1>APNANAAM</h1>
-<p>Mera Info App</p>
+<button id="mode" onclick="document.body.classList.toggle('light')">🌓</button>
+<div class="av">H</div>
+<h1>Himanshu</h1>
+<div id="clock"></div>
 </header>
 <nav>
-<button class="on" onclick="show(0,this)">Home</button>
-<button onclick="show(1,this)">About</button>
-<button onclick="show(2,this)">Contact</button>
+<button class="on" onclick="s(0,this)">Home</button>
+<button onclick="s(1,this)">Skills</button>
+<button onclick="s(2,this)">Contact</button>
 </nav>
 <div class="tab on">
-<div class="card"><b>Welcome</b><br>Ye mera Info App hai.</div>
-</div>
-<div class="tab">
-<div class="card"><b>Naam</b><br>APNANAAM</div>
-<div class="card"><b>Kaam</b><br>APNAKAAM</div>
+<div class="card"><b>👋 Namaste!</b><br><span id="g"></span></div>
+<div class="card"><b>Kaam</b><br>Student / Developer</div>
 <div class="card"><b>Shauk</b><br>Coding seekhna</div>
 </div>
 <div class="tab">
-<div class="card"><b>Email</b><br>himanshufbg090@gmail.com</div>
-<div class="card"><b>GitHub</b><br>himanshufbg090-sys</div>
+<div class="card">HTML<div class="bar"><i style="width:70%"></i></div></div>
+<div class="card">CSS<div class="bar"><i style="width:55%"></i></div></div>
+<div class="card">JavaScript<div class="bar"><i style="width:40%"></i></div></div>
+<div class="card">Termux / Git<div class="bar"><i style="width:60%"></i></div></div>
+</div>
+<div class="tab">
+<a class="btn" href="mailto:himanshufbg090@gmail.com">📧 Email bhejo</a>
+<a class="btn" href="https://github.com/himanshufbg090-sys">💻 Mera GitHub</a>
 </div>
 <script>
-function show(i,b){
+function s(i,b){
 document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('on',n==i));
 document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
-b.classList.add('on');
-}
+b.classList.add('on')}
+function t(){var d=new Date(),h=d.getHours();
+document.getElementById('clock').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+document.getElementById('g').textContent=(h<12?'Suprabhat':h<17?'Namaste':'Shubh sandhya')+'! Ye mera Info App hai.'}
+t();setInterval(t,1000);
 </script>
 </body>
 </html>
