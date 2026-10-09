@@ -32,7 +32,7 @@ msg("");
 var p=$("ph").value.replace(/\D/g,"");
 if(p.length!=10){msg("10 digit ka number daalo");return}
 $("sb").disabled=true;$("sb").textContent="Bhej raha hoon...";
-try{vf=new firebase.auth.RecaptchaVerifier("rc",{size:"invisible"})}catch(x){}
+try{if(vf)vf.clear()}catch(x){}$("rc").innerHTML='<div id="rc2"></div>';vf=new firebase.auth.RecaptchaVerifier("rc2",{size:"invisible"});
 auth.signInWithPhoneNumber("+91"+p,vf).then(function(r){conf=r;step(2);$("sb").disabled=false;$("sb").textContent="OTP bhejo"})
 .catch(function(e){er(e);$("sb").disabled=false;$("sb").textContent="OTP bhejo";try{vf.clear()}catch(x){}})};
 $("vb").onclick=function(){
