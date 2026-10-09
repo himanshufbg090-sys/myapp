@@ -1,263 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#111827">
-<title>MyApp</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Help</title>
 <style>
+:root{--bg:#0b1020;--card:#161d33;--tx:#fff;--mut:#94a3b8;--ac:#38bdf8}
 *{box-sizing:border-box}
-body{
- margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#111827;
- padding-bottom:80px
-}
-header{
- background:#111827;color:white;padding:24px 20px;border-radius:0 0 25px 25px
-}
-header h1{margin:0 0 6px;font-size:28px}
-.container{max-width:900px;margin:auto;padding:18px}
-.grid{
- display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px
-}
-.card,.section{
- background:white;border-radius:18px;padding:18px;
- box-shadow:0 5px 20px #00000012
-}
-.card{cursor:pointer;transition:.2s}
-.card:active{transform:scale(.97)}
-.icon{font-size:30px}
-.card h3{margin:8px 0 4px}
-.card p{margin:0;color:#6b7280}
-.section{margin-top:18px}
-input,textarea,button{
- width:100%;padding:13px;margin:6px 0;border-radius:11px;
- border:1px solid #d1d5db;font-size:15px
-}
-textarea{min-height:120px;resize:vertical}
-button{
- background:#111827;color:white;border:0;font-weight:bold;cursor:pointer
-}
-.item{
- background:#f3f4f6;padding:13px;margin:9px 0;border-radius:12px
-}
-.small{font-size:12px;color:#6b7280}
-.progress{
- height:12px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:10px 0
-}
-.progress div{height:100%;background:#111827;width:0}
-.bottom{
- position:fixed;bottom:0;left:0;right:0;background:white;
- display:flex;justify-content:space-around;padding:10px;
- box-shadow:0 -3px 15px #0002;z-index:10
-}
-.bottom button{
- width:auto;background:none;color:#111827;margin:0;padding:7px
-}
-.dark{background:#0f172a;color:#f8fafc}
-.dark .card,.dark .section,.dark .bottom{background:#1e293b;color:white}
-.dark .card p,.dark .small{color:#cbd5e1}
-.dark .item{background:#334155}
-.dark input,.dark textarea{background:#0f172a;color:white;border-color:#475569}
-.dark .progress{background:#475569}
+body{margin:0;font-family:sans-serif;background:var(--bg);color:var(--tx)}
+header{padding:30px 20px 24px;text-align:center;background:linear-gradient(135deg,#6366f1,#06b6d4);border-radius:0 0 28px 28px}
+h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;opacity:.9;font-size:14px}
+#q{display:block;width:calc(100% - 32px);margin:16px;padding:14px;border:0;border-radius:14px;background:var(--card);color:var(--tx);font-size:16px}
+#cats{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px}
+#cats button{flex:none;padding:8px 16px;border:0;border-radius:20px;background:var(--card);color:var(--mut);font-size:14px}
+#cats button.on{background:var(--ac);color:#fff}
+#list{padding:0 16px 30px}
+.card{display:flex;gap:12px;background:var(--card);padding:14px;border-radius:14px;margin-bottom:12px}
+.ic{flex:none;width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:26px}
+.info{flex:1}
+.info b{display:block;font-size:16px}
+.info small{color:var(--mut);display:block;margin:4px 0 8px}
+.tag{font-size:11px;color:var(--ac)}
+a.go{display:inline-block;margin-top:6px;padding:8px 16px;border-radius:10px;background:var(--ac);color:#fff;text-decoration:none;font-size:14px}
+#none{text-align:center;color:var(--mut);padding:30px}
 </style>
 </head>
-
 <body>
-
 <header>
- <img src="./myapp-logo.png" alt="DEAR GOD" style="width:110px;height:110px;object-fit:contain;border-radius:20px;"><h1>MyApp</h1>
- <div>Study • Journal • Tasks</div>
+<h1>🎓 Student Help</h1>
+<p>Sarkari services, ek hi jagah</p>
 </header>
-
-<div class="container">
-
-<div class="grid">
- <div class="card" onclick="go('journal')">
-  <div class="icon">📝</div><h3>Journal</h3><p>Write & save</p>
- </div>
-
- <div class="card" onclick="go('todo')">
-  <div class="icon">✅</div><h3>To-Do</h3><p>Manage tasks</p>
- </div>
-
- <div class="card" onclick="go('study')">
-  <div class="icon">📚</div><h3>Study</h3><p>Track learning</p>
- </div>
-
- <div class="card" onclick="toggleDark()">
-  <div class="icon">🌙</div><h3>Theme</h3><p>Dark / Light</p>
- </div>
-</div>
-
-<div class="section" id="journal">
-<h2>📝 Journal</h2>
-<input id="jt" placeholder="Journal title">
-<textarea id="jx" placeholder="Write something..."></textarea>
-<button onclick="saveJournal()">💾 Save Journal</button>
-<input id="js" placeholder="🔍 Search journal" oninput="renderJournals()">
-<div id="journalList"></div>
-</div>
-
-<div class="section" id="todo">
-<h2>✅ To-Do List</h2>
-<input id="task" placeholder="Enter a task">
-<button onclick="addTask()">➕ Add Task</button>
-<div id="taskList"></div>
-</div>
-
-<div class="section" id="study">
-<h2>📚 Study Tracker</h2>
-<input id="subject" placeholder="Subject">
-<input id="minutes" type="number" placeholder="Study minutes">
-<button onclick="addStudy()">📊 Add Study</button>
-<div id="studyList"></div>
-
-<h3>📈 Total Study Time</h3>
-<div class="progress"><div id="bar"></div></div>
-<p id="total">0 minutes</p>
-</div>
-
-<div class="section">
-<h2>⚙️ Settings</h2>
-<button onclick="toggleDark()">🌙 Toggle Dark Mode</button>
-<button onclick="clearData()">🗑️ Clear All Local Data</button>
-</div>
-
-</div>
-
-<div class="bottom">
-<button onclick="topPage()">🏠 Home</button>
-<button onclick="go('journal')">📝 Journal</button>
-<button onclick="go('todo')">✅ Tasks</button>
-<button onclick="go('study')">📚 Study</button>
-</div>
-
+<input id="q" placeholder="🔍 Search karo (jaise NSP, loan)">
+<div id="cats"></div>
+<div id="list"></div>
 <script>
-let journals=JSON.parse(localStorage.getItem("journals")||"[]");
-let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
-let studies=JSON.parse(localStorage.getItem("studies")||"[]");
-
-function go(id){
- document.getElementById(id).scrollIntoView({behavior:"smooth"});
+var D=[
+{id:1,title:"ABC ID (Academic Bank)",description:"Admission aur Exam ke liye zaroori ID",official_link:"https://www.abc.gov.in",category:"Identity"},
+{id:2,title:"DigiLocker",description:"Apni Marksheet download karein",official_link:"https://www.digilocker.gov.in",category:"Identity"},
+{id:3,title:"NSP Scholarship",description:"Sarkari chhatravriti form bharein",official_link:"https://scholarships.gov.in",category:"Scholarship"},
+{id:4,title:"NTA Exams (JEE/NEET/CUET)",description:"Entrance Exams ke application",official_link:"https://exams.nta.ac.in",category:"Exams"},
+{id:5,title:"SSC Jobs",description:"10th/12th pass ke liye sarkari naukri",official_link:"https://ssc.gov.in",category:"Jobs"},
+{id:6,title:"Education Loan",description:"Padhai ke liye sasta sarkari loan",official_link:"https://www.vidyalakshmi.co.in",category:"Finance"}
+];
+var E={Identity:"🪪",Scholarship:"🎓",Exams:"📝",Jobs:"💼",Finance:"💰"};
+var cat="All";
+var cs=["All"].concat(D.map(function(x){return x.category}).filter(function(v,i,a){return a.indexOf(v)==i}));
+function draw(){
+var q=document.getElementById("q").value.toLowerCase();
+document.getElementById("cats").innerHTML=cs.map(function(c){return '<button class="'+(c==cat?'on':'')+'" onclick="cat=\''+c+'\';draw()">'+c+'</button>'}).join("");
+var r=D.filter(function(x){return (cat=="All"||x.category==cat)&&(x.title+x.description).toLowerCase().indexOf(q)>-1});
+document.getElementById("list").innerHTML=r.length?r.map(function(x){return '<div class="card"><div class="ic">'+(E[x.category]||"📌")+'</div><div class="info"><span class="tag">'+x.category+'</span><b>'+x.title+'</b><small>'+x.description+'</small><a class="go" href="'+x.official_link+'" target="_blank" rel="noopener">Open ↗</a></div></div>'}).join(""):'<div id="none">Kuch nahi mila 😕</div>';
 }
-
-function topPage(){
- window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function saveJournal(){
- let title=jt.value.trim(), text=jx.value.trim();
- if(!title||!text){alert("Please enter title and text");return}
- journals.unshift({
-  title,text,date:new Date().toLocaleString()
- });
- localStorage.setItem("journals",JSON.stringify(journals));
- jt.value="";jx.value="";
- renderJournals();
-}
-
-function renderJournals(){
- let q=js.value.toLowerCase();
- journalList.innerHTML=journals.filter(x=>
-  x.title.toLowerCase().includes(q)||x.text.toLowerCase().includes(q)
- ).map((x,i)=>`
- <div class="item">
- <b>${x.title}</b>
- <div class="small">${x.date}</div>
- <p>${x.text}</p>
- <button onclick="delJournal(${i})">🗑️ Delete</button>
- </div>`).join("");
-}
-
-function delJournal(i){
- journals.splice(i,1);
- localStorage.setItem("journals",JSON.stringify(journals));
- renderJournals();
-}
-
-function addTask(){
- let t=task.value.trim();
- if(!t)return;
- tasks.push({text:t,done:false});
- localStorage.setItem("tasks",JSON.stringify(tasks));
- task.value="";
- renderTasks();
-}
-
-function renderTasks(){
- taskList.innerHTML=tasks.map((x,i)=>`
- <div class="item">
- <input type="checkbox" ${x.done?"checked":""}
- onchange="toggleTask(${i})">
- ${x.done?"<s>"+x.text+"</s>":x.text}
- <button onclick="delTask(${i})">🗑️ Delete</button>
- </div>`).join("");
-}
-
-function toggleTask(i){
- tasks[i].done=!tasks[i].done;
- localStorage.setItem("tasks",JSON.stringify(tasks));
- renderTasks();
-}
-
-function delTask(i){
- tasks.splice(i,1);
- localStorage.setItem("tasks",JSON.stringify(tasks));
- renderTasks();
-}
-
-function addStudy(){
- let s=subject.value.trim(),m=Number(minutes.value);
- if(!s||!m)return;
- studies.unshift({subject:s,minutes:m,date:new Date().toLocaleDateString()});
- localStorage.setItem("studies",JSON.stringify(studies));
- subject.value="";minutes.value="";
- renderStudies();
-}
-
-function renderStudies(){
- let total=studies.reduce((a,x)=>a+Number(x.minutes),0);
- totalEl.textContent=total+" minutes";
- bar.style.width=Math.min(total/600*100,100)+"%";
-
- studyList.innerHTML=studies.map((x,i)=>`
- <div class="item">
- 📚 <b>${x.subject}</b> — ${x.minutes} minutes
- <div class="small">${x.date}</div>
- <button onclick="delStudy(${i})">🗑️ Delete</button>
- </div>`).join("");
-}
-
-function delStudy(i){
- studies.splice(i,1);
- localStorage.setItem("studies",JSON.stringify(studies));
- renderStudies();
-}
-
-function toggleDark(){
- document.body.classList.toggle("dark");
- localStorage.setItem("dark",document.body.classList.contains("dark"));
-}
-
-function clearData(){
- if(confirm("Delete all Journal, Tasks and Study data?")){
-  localStorage.clear();
-  location.reload();
- }
-}
-
-if(localStorage.getItem("dark")==="true")document.body.classList.add("dark");
-
-renderJournals();
-renderTasks();
-renderStudies();
-
-if("serviceWorker" in navigator){
- navigator.serviceWorker.register("./sw.js").catch(()=>{});
-}
+document.getElementById("q").oninput=draw;
+draw();
 </script>
-
 </body>
 </html>
