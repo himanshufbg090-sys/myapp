@@ -25,7 +25,7 @@ header p{margin:6px 0 0;opacity:.9;font-size:14px}
 a.go{display:inline-block;margin-top:6px;padding:8px 16px;border-radius:10px;background:var(--ac);color:#fff;text-decoration:none;font-size:14px}
 #none{text-align:center;color:var(--mut);padding:30px}
 </style>
-</head>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#6366f1"></head>
 <body>
 <header>
 <h1>🎓 Student Help</h1>
@@ -55,5 +55,5 @@ document.getElementById("list").innerHTML=r.length?r.map(function(x){return '<di
 document.getElementById("q").oninput=draw;
 draw();
 </script>
-<script src="login.js"></script></body>
+<script src="login.js"></script><script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js")</script></body>
 </html>
